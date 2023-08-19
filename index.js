@@ -66,6 +66,4 @@ function displayOnScreen(productStore) {
 		li.appendChild(deleteButton);
 		productList.appendChild(li);
 	}
-
 }
-
