@@ -1,0 +1,13 @@
+body{
+    background-image: url(/dan-cristian-padure-Co315r87x-E-unsplash.jpg);
+}
+.margin-top{
+    margin-top: 10px;
+    list-style-type: none;
+}
+#h1{
+   text-align: center; 
+}
+/* .color-of-text{
+    color: #ffffff;
+} */
