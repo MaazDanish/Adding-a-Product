@@ -1,8 +1,8 @@
 let addProductButton = document.querySelector('#add-product-btn');
-let priceList = document.querySelector('#priceList');
+// let priceList = document.querySelector('#priceList');
 
 // saving data in crud crud using object
-function saveData(event) {
+async function saveData(event) {
 	event.preventDefault();
 	let name = event.target.productName.value;
 	let price = event.target.price.value;
@@ -10,30 +10,31 @@ function saveData(event) {
 		name,
 		price
 	}
-
-	axios.post('https://crudcrud.com/api/7c27d498f402443aa958cb05d852ee41/listProduct', productStore)
-		.then((res) => displayOnScreen(res.data))
-		.catch((err) => console.log(err));
+	try {
+		let res = await axios.post('https://crudcrud.com/api/a22d16661c9a4e728fd21b3f99ea783d/listProduct', productStore)
+		displayOnScreen(res.data);
+	} catch (err) {
+		console.log(err);
+	}
 
 	event.target.productName.value = '';
 	event.target.price.value = '';
-
 }
 
 //  Getting all data and showing it on screen
-
-window.addEventListener('DOMContentLoaded', () => {
-	axios.get('https://crudcrud.com/api/7c27d498f402443aa958cb05d852ee41/listProduct')
-		.then((res) => {
-			for (var i = 0; i < res.data.length; i++) {
-				displayOnScreen(res.data[i]);
-			}
-		})
-		.catch((err) => console.log(err));
+window.addEventListener('DOMContentLoaded', async () => {
+	try {
+		let res =await axios.get('https://crudcrud.com/api/a22d16661c9a4e728fd21b3f99ea783d/listProduct')
+		for (var i = 0; i < res.data.length; i++) {
+			displayOnScreen(res.data[i]);
+		}
+	} catch (err) {
+		console.log(err);
+	}
 })
 
 //  to display on screen
-function displayOnScreen(productStore) {
+async function displayOnScreen(productStore) {
 	if (productStore.name === '' || productStore.price === '') {
 		alert('Empty fields are not allowed');
 	} else {
@@ -46,9 +47,9 @@ function displayOnScreen(productStore) {
 		li.textContent = `Product Name - ${productStore.name} || Product Cost - ${productStore.price} `;
 
 		// storing total amount of product
-		let costPlace = document.getElementById('costPlace');
-		let value = Number(costPlace.textContent) + Number(productStore.price);
-		costPlace.textContent = value;
+		// let costPlace = document.getElementById('costPlace');
+		// let value = Number(costPlace.textContent) + Number(productStore.price);
+		// costPlace.textContent = value;
 
 		let deleteButton = document.createElement('input');
 		deleteButton.type = 'button';
@@ -57,15 +58,17 @@ function displayOnScreen(productStore) {
 
 
 		let id = productStore._id;
-		deleteButton.onclick = () => {
-			axios.delete('https://crudcrud.com/api/7c27d498f402443aa958cb05d852ee41/listProduct/' + id)
-				.then(() => {
-					value = Number(costPlace.textContent) - Number(productStore.price)
-					costPlace.textContent = value;
-				})
-				.catch((error) => console.log(error));
+		deleteButton.onclick = async () => {
+			try {
+				let res = await axios.delete('https://crudcrud.com/api/a22d16661c9a4e728fd21b3f99ea783d/listProduct/' + id)
+				// value = Number(costPlace.textContent) - Number(productStore.price);
+				// costPlace.textContent = value;
+			} catch (err) {
+				console.log(err);
+			}
 			productList.removeChild(li);
 		};
+
 		// Appending the elements in parent element
 		li.appendChild(deleteButton);
 		productList.appendChild(li);
